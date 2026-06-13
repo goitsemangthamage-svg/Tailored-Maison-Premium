@@ -3,182 +3,206 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// These are high-end architectural images from Unsplash to ensure the site looks premium immediately
 const images = [
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80"
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070", // Architectural glass
+  "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069", // Minimalist office
+  "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2067"  // Atmospheric lighting
 ];
 
-const fadeVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 2, ease: "easeInOut" } },
-  exit: { opacity: 0, transition: { duration: 2, ease: "easeInOut" } },
-};
-
-const contentVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1.2, delay, ease: [0.25, 0.1, 0.25, 1] },
-  }),
-};
-
-export default function ComingSoon() {
+export default function MaisonAtelier() {
   const [current, setCurrent] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true); // Ensures the page shows up after loading
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length);
-    }, 6000);
+    }, 8000); // Slower transitions for more "weight"
     return () => clearInterval(interval);
   }, []);
 
-  if (!isLoaded) return <div style={{backgroundColor: '#0a0a0a', minHeight: '100vh'}} />;
-
   return (
-    <>
+    <div className="maison-root">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Inter:wght@100;200&family=JetBrains+Mono:wght@100&display=swap');
 
         :root {
-          --obsidian: #0a0a0a;
-          --parchment: #f0ebe0;
-          --parchment-dim: rgba(240, 235, 224, 0.72);
-          --parchment-faint: rgba(240, 235, 224, 0.38);
-          --gold-whisper: rgba(212, 192, 152, 0.55);
-          --glass-bg: rgba(10, 10, 10, 0.6);
-          --glass-border: rgba(240, 235, 224, 0.15);
+          --gold: #d4c098;
+          --obsidian: #050505;
+          --parchment: #f5f5f0;
         }
 
         body { 
           background: var(--obsidian); 
-          margin: 0; 
-          overflow-x: hidden;
+          color: var(--parchment);
+          margin: 0;
+          font-family: 'Inter', sans-serif;
+          -webkit-font-smoothing: antialiased;
         }
 
-        .bg-layer {
+        .canvas {
           position: fixed;
           inset: 0;
+          overflow: hidden;
           z-index: 0;
         }
 
-        .bg-image {
+        .bg-zoom {
           position: absolute;
           inset: 0;
           background-size: cover;
           background-position: center;
-          filter: blur(15px) brightness(0.3); /* Slightly reduced blur so we can see movement */
-          transform: scale(1.1);
+          filter: brightness(0.25) saturate(0.5);
         }
 
-        .page-wrapper {
+        .overlay-vignette {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.8) 100%);
+          z-index: 1;
+        }
+
+        .grain {
+          position: fixed;
+          inset: 0;
+          background: url('https://grainy-gradients.vercel.app/noise.svg');
+          opacity: 0.03;
+          pointer-events: none;
+          z-index: 50;
+        }
+
+        .content-frame {
           position: relative;
           z-index: 10;
-          min-height: 100vh;
+          height: 100vh;
           display: flex;
           flex-direction: column;
-          align-items: center;
           justify-content: space-between;
-          padding: 4rem 1.5rem;
-          color: var(--parchment);
+          padding: 5rem 2rem;
+          box-sizing: border-box;
+          max-width: 1400px;
+          margin: 0 auto;
         }
 
-        .hero-glass {
-          max-width: 800px;
-          padding: 3rem;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          text-align: center;
-        }
-
-        .hero-headline {
-          font-family: 'DM Serif Display', serif;
-          font-size: clamp(2rem, 5vw, 3.5rem);
-          line-height: 1.1;
-          margin-bottom: 1.5rem;
-        }
-
-        .hero-subtext {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 1.2rem;
-          opacity: 0.7;
-          letter-spacing: 0.05em;
-        }
-
-        .logo {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.7rem;
-          letter-spacing: 0.4em;
-          text-transform: uppercase;
-          opacity: 0.8;
-        }
-
-        .vision-text {
-          max-width: 600px;
-          font-family: 'Cormorant Garamond', serif;
-          line-height: 1.8;
-          text-align: center;
-          opacity: 0.6;
-          margin-top: 2rem;
-        }
-
-        .status-marker {
+        .mono-text {
           font-family: 'JetBrains Mono', monospace;
           font-size: 0.6rem;
-          letter-spacing: 0.3em;
-          opacity: 0.3;
+          letter-spacing: 0.5em;
           text-transform: uppercase;
-          margin-top: 4rem;
+          opacity: 0.5;
+        }
+
+        .serif-hero {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 300;
+          font-size: clamp(2.5rem, 8vw, 5rem);
+          line-height: 1;
+          letter-spacing: -0.02em;
+        }
+
+        .divider-line {
+          width: 60px;
+          height: 1px;
+          background: var(--gold);
+          margin: 2rem 0;
+          opacity: 0.4;
+        }
+
+        .vision-block {
+          max-width: 500px;
+          font-family: 'Cormorant Garamond', serif;
+          font-style: italic;
+          font-size: 1.2rem;
+          line-height: 1.6;
+          opacity: 0.7;
+        }
+
+        .status-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          width: 100%;
         }
       `}</style>
 
-      {/* Background layer */}
-      <div className="bg-layer">
+      <div className="grain" />
+      
+      <div className="canvas">
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
-            className="bg-image"
+            className="bg-zoom"
             style={{ backgroundImage: `url(${images[current]})` }}
-            variants={fadeVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 4, ease: "easeOut" }}
           />
         </AnimatePresence>
+        <div className="overlay-vignette" />
       </div>
 
-      {/* Main Content */}
-      <main className="page-wrapper">
-        <motion.p custom={0} variants={contentVariants} initial="hidden" animate="visible" className="logo">
-          Tailored Maison
-        </motion.p>
-
-        <motion.div custom={0.4} variants={contentVariants} initial="hidden" animate="visible" className="hero-glass">
-          <h1 className="hero-headline">
-            Every business has a story <br />
-            <span style={{fontStyle: 'italic', opacity: 0.8}}>but not all have a voice</span>
-          </h1>
-          <p className="hero-subtext">Bringing stories buried under corporate noise back to life.</p>
+      <main className="content-frame">
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.5, delay: 0.5 }}
+        >
+          <p className="mono-text">Tailored Maison</p>
         </motion.div>
 
-        <motion.div custom={0.8} variants={contentVariants} initial="hidden" animate="visible">
-           <p className="vision-text">
-            Stands for those who choose to wear the Crown of Service. <br />
-            We honor excellence in the mundane.
-          </p>
-          <p style={{textAlign: 'center', marginTop: '20px', fontFamily: 'DM Serif Display', opacity: 0.8}}>Light for Leaders</p>
-        </motion.div>
+        {/* Hero */}
+        <div>
+          <motion.h1 
+            className="serif-hero"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            Every business <br /> 
+            <span style={{ paddingLeft: '2rem' }}>has a story.</span>
+          </motion.h1>
+          
+          <motion.div 
+            className="divider-line"
+            initial={{ width: 0 }}
+            animate={{ width: 60 }}
+            transition={{ duration: 2, delay: 1 }}
+          />
 
-        <motion.p custom={1.2} variants={contentVariants} initial="hidden" animate="visible" className="status-marker">
-          Refining Foundations — By Invitation Only
-        </motion.p>
+          <motion.p 
+            className="vision-block"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2, delay: 1.5 }}
+          >
+            Dedicated to bringing stories buried under <br /> 
+            corporate noise back to life.
+          </motion.p>
+        </div>
+
+        {/* Footer Info */}
+        <div className="status-footer">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            transition={{ delay: 2 }}
+          >
+            <p className="mono-text" style={{ marginBottom: '0.5rem' }}>The Vision</p>
+            <p style={{ fontSize: '0.8rem', maxWidth: '300px', fontWeight: 200, opacity: 0.8 }}>
+              Light for Leaders. You do not have to stand alone.
+            </p>
+          </motion.div>
+
+          <motion.p 
+            className="mono-text"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            transition={{ delay: 2.5 }}
+          >
+            Est. 2026 — Invitation Only
+          </motion.p>
+        </div>
       </main>
-    </>
+    </div>
   );
 }
