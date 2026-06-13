@@ -1,4 +1,4 @@
-"use client";
+";
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -221,14 +221,4 @@ export default function MaisonFinal() {
 
           <motion.p 
             className="mono-text"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.4 }}
-            transition={{ delay: 2.5 }}
-          >
-            Refining Foundations — 2026
-          </motion.p>
-        </div>
-      </main>
-    </div>
-  );
-}
+            initial=
