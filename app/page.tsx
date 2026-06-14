@@ -1,4 +1,4 @@
-"use client";
+use client";
 import { motion } from "framer-motion";
 const sections = [
  { tag: "Tailored Maison", h1: "Every business has a story.", h1i: "But not all have a voice.", p: "A vision inspired by the Author of life" },
