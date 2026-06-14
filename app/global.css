@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=JetBrains+Mono:wght@100;200&family=Inter:wght@100;200&display=swap');
+
+:root {
+  /* Lake Como Palette */
+  --obsidian: #050505;
+  --parchment: #f5f5f0;
+  --gold: #d4c098;
+  --glass: rgba(245, 245, 240, 0.03);
+  --border: rgba(245, 245, 240, 0.08);
+  
+  /* Spacing - The "Intentional" Scale */
+  --space-sm: 1.5rem;
+  --space-md: 3rem;
+  --space-lg: 6rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--obsidian);
+  color: var(--parchment);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* The "Loggia" Effect - Wide, intentional framing */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-sm);
+}
+
+.section-padding {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-lg);
+}
+
+/* Hardware-Resilient Lighting */
+.ambient-light {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 60vh;
+  background: radial-gradient(circle at 50% 0%, rgba(212, 192, 152, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
